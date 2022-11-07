@@ -24,7 +24,7 @@ const postsSlice = createSlice({
 });
 
 console.log("postsSlice", postsSlice);
-
+console.log("reducer-action", postsSlice.reducer.action);
 export const allPosts = (state) => state.posts;
 
 export const { postAdded } = postsSlice.actions;

@@ -25,8 +25,6 @@ export const counterSlice = createSlice({
   },
 });
 
-console.log("counterSlice", counterSlice);
-
 export const { increment, decrement, reset, incrementByAmount } =
   counterSlice.actions;
 
