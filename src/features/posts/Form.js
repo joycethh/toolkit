@@ -10,7 +10,6 @@ const Form = () => {
   const [content, setContent] = useState("");
   const [userId, setUserId] = useState("");
   const users = useSelector(allUsers);
-  console.log("users in the form", users);
 
   const onTitleChanged = (e) => setTitle(e.target.value);
   const onContentChanged = (e) => setContent(e.target.value);
