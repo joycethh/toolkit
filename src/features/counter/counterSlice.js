@@ -18,13 +18,14 @@ export const counterSlice = createSlice({
       state.count = 0;
     },
     incrementByAmount: (state, action) => {
+      console.log("action", incrementByAmount.action);
+
       state.count += action.payload;
     },
   },
 });
 
 console.log("counterSlice", counterSlice);
-console.log("action", counterSlice.action);
 
 export const { increment, decrement, reset, incrementByAmount } =
   counterSlice.actions;
