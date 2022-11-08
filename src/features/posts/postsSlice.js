@@ -57,10 +57,12 @@ const postsSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchPosts.pending, (state, action) => {
-        state.status === "loading";
+        state.status = "loading";
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
-        state.status === "succeeded";
+        state.status = "succeeded";
+
+        //add date and reactions to our fetched-posts
         let min = 1;
         const loadedPosts = action.payload.map((post) => {
           post.date = sub(new Date(), { minutes: min++ }).toISOString();
@@ -73,7 +75,7 @@ const postsSlice = createSlice({
           };
           return post;
         });
-
+        //add any fetched posts to the posts array
         state.posts = state.posts.concat(loadedPosts);
       });
   },
