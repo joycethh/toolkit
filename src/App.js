@@ -7,12 +7,13 @@ import Layout from "./components/Layout";
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Layout />} />
-      <Route index element={<PostLists />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={<PostLists />} />
 
-      <Route path="post">
-        <Route index element={<Form />} />
-        <Route path=":postId" element={<SinglePost />} />
+        <Route path="post">
+          <Route index element={<Form />} />
+          <Route path=":postId" element={<SinglePost />} />
+        </Route>
       </Route>
     </Routes>
   );

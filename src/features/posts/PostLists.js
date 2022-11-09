@@ -34,12 +34,7 @@ export const PostLists = () => {
     content = <p>{postsError}</p>;
   }
 
-  return (
-    <section>
-      <h2>Posts Lists</h2>
-      {content}
-    </section>
-  );
+  return <section>{content}</section>;
 };
 
 export default PostLists;
