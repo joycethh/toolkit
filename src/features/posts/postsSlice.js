@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { sub } from "date-fns";
+import { useParams } from "react-router-dom";
 
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts";
 
@@ -29,6 +30,18 @@ export const addPost = createAsyncThunk("/posts/addPost", async (newPost) => {
   }
 });
 
+export const updatePost = createAsyncThunk(
+  "/posts/updatePost",
+  async (id, updatedPost) => {
+    try {
+      const response = await axios.post(POSTS_URL, updatedPost);
+      console.log("updatePost reponse", response);
+      return response.data;
+    } catch (error) {
+      return error.message;
+    }
+  }
+);
 const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -79,6 +92,9 @@ const postsSlice = createSlice({
           rocket: 0,
           coffee: 0,
         };
+        state.posts.push(action.payload);
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
         state.posts.push(action.payload);
       });
   },

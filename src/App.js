@@ -3,6 +3,7 @@ import PostLists from "./features/posts/PostLists";
 import Form from "./features/posts/Form";
 import SinglePost from "./features/posts/SinglePost";
 import Layout from "./components/Layout";
+import UpdatePost from "./features/posts/UpdatePost";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="post">
           <Route index element={<Form />} />
           <Route path=":postId" element={<SinglePost />} />
+          <Route path="edit/:postId" element={<UpdatePost />} />
         </Route>
       </Route>
     </Routes>
