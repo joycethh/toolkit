@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { postAdded } from "./postsSlice";
+import { addPost } from "./postsSlice";
 import { allUsers } from "../users/usersSlice";
 
 const Form = () => {
@@ -9,21 +9,30 @@ const Form = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userId, setUserId] = useState("");
+  const [addRequestStatus, setAddRequestStatus] = useState("idle");
   const users = useSelector(allUsers);
 
   const onTitleChanged = (e) => setTitle(e.target.value);
   const onContentChanged = (e) => setContent(e.target.value);
   const onAuthorChanged = (e) => setUserId(e.target.value);
 
+  const canSave =
+    [title, content, userId].every(Boolean) && addRequestStatus === "idle";
   const handleSubmit = () => {
-    if (title && content) {
-      //   dispatch(postAdded({ id: nanoid(), title, content }));
-      dispatch(postAdded(title, content, userId));
-      setTitle("");
-      setContent("");
+    if (canSave) {
+      try {
+        setAddRequestStatus("pending");
+        dispatch(addPost({ title, body: content, userId })).unwrap();
+        setTitle("");
+        setContent(" ");
+        setUserId("");
+      } catch (err) {
+        console.log("Failed to save the new post", err);
+      } finally {
+      }
     }
   };
-  const canSave = Boolean(title) && Boolean(content) && Boolean(userId);
+
   const usersOptions = users.map((user) => (
     <option key={user.id} value={user.id}>
       {user.name}
