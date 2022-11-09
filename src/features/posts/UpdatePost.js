@@ -11,27 +11,69 @@ import { updatePost, selectPostById } from "./postsSlice";
 
 const UpdatePost = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { postId } = useParams();
 
   const seletedToUpdate = useSelector((state) =>
     selectPostById(state, Number(postId))
   );
-
-  const [title, setTitle] = useState(seletedToUpdate.title);
-  const [content, setContent] = useState(seletedToUpdate.body);
-  const [userId, setUserId] = useState(seletedToUpdate.userId);
   const users = useSelector(allUsers);
 
-  const onTitleChanged = (e) => setTitle(e.target.value);
+  const [title, setTitle] = useState(seletedToUpdate?.title);
+  const [content, setContent] = useState(seletedToUpdate?.body);
+  const [userId, setUserId] = useState(seletedToUpdate?.userId);
+  const [requestStatus, setRequestStatus] = useState("idle");
+
+  const onTitleChanged = (e) => {
+    setTitle(e.target.value);
+    console.log("title change", title);
+  };
   const onContentChanged = (e) => setContent(e.target.value);
   const onAuthorChanged = (e) => setUserId(e.target.value);
 
-  const canSave = [title, content, userId].every(Boolean);
+  if (!seletedToUpdate) {
+    return (
+      <section>
+        <h2>Post not found!</h2>
+      </section>
+    );
+  }
+
+  const canSave =
+    [title, content, userId].every(Boolean) && requestStatus === "idle";
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updatePost({ title, body: content, userId: userId, id: postId }));
+    if (canSave) {
+      try {
+        setRequestStatus("pending");
+        dispatch(
+          updatePost({
+            id: seletedToUpdate.id,
+            title,
+            body: content,
+            userId,
+            reactions: seletedToUpdate.reactions,
+          })
+        ).unwrap();
+        setTitle("");
+        setContent(" ");
+        setUserId("");
+        navigate(`/post/${postId}`);
+      } catch (err) {
+        console.log("Failed to edit the post", err);
+      } finally {
+        setRequestStatus("idle");
+      }
+    }
   };
+
+  const usersOptions = users.map((user) => (
+    <option key={user.id} value={user.id}>
+      {user.name}
+    </option>
+  ));
 
   return (
     <section>
@@ -47,7 +89,8 @@ const UpdatePost = () => {
         />
         <label htmlFor="postAuthor">Author:</label>
         <select id="postAuthor" value={userId} onChange={onAuthorChanged}>
-          <option value=""></option>
+          <option value="" />
+          {usersOptions}
         </select>
         <label htmlFor="postContent">Content:</label>
         <textarea
