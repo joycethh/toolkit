@@ -10,7 +10,7 @@ const SinglePost = ({ post }) => {
   const postId = useParams();
   const dispatch = useDispatch();
   const seletedPost = useSelector((state) =>
-    selectPostById(state, Number(postId))
+    selectPostById(state, Number(postId.postId))
   );
 
   if (!seletedPost) {
@@ -22,13 +22,13 @@ const SinglePost = ({ post }) => {
   }
   return (
     <article>
-      <h3>{post.title}</h3>
-      <p>{post.body}</p>
+      <h3>{seletedPost.title}</h3>
+      <p>{seletedPost.body}</p>
       <p className="postCredit">
-        <PostAuthor userId={post.userId} />
-        <TimeAgo timestamp={post.date} />
+        <PostAuthor userId={seletedPost.userId} />
+        <TimeAgo timestamp={seletedPost.date} />
       </p>
-      <ReactionButtons post={post} />
+      <ReactionButtons post={seletedPost} />
     </article>
   );
 };
