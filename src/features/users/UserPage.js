@@ -13,12 +13,12 @@ const UserPage = () => {
 
   const postsForUser = useSelector((state) => {
     const allPosts = selectAllPosts(state);
-    return allPosts.filter((post) => post.userId === userId);
+    return allPosts.filter((post) => post.userId === Number(userId));
   });
 
   const postTitles = postsForUser.map((post) => (
     <li key={post.id}>
-      <Link to={`/posts/${post.id}`}>{post.title}</Link>
+      <Link to={`/post/${post.id}`}>{post.title}</Link>
     </li>
   ));
   return (
