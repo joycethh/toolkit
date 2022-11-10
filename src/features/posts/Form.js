@@ -30,6 +30,7 @@ const Form = () => {
         console.log("Failed to save the new post", err);
       } finally {
       }
+      setAddRequestStatus("idle");
     }
   };
 
