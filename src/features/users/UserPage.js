@@ -6,7 +6,7 @@ import { useParams, Link } from "react-router-dom";
 
 import { selectUserById } from "./usersSlice";
 import {
-  allPosts as selectAllPosts,
+  //   allPosts as selectAllPosts,
   selectPostsByUser,
 } from "../posts/postsSlice";
 
