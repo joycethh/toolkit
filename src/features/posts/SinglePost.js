@@ -1,12 +1,14 @@
-import { useSelector } from "react-redux";
-import { useParams, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 import PostAuthor from "./Author";
 import TimeAgo from "./TimeAgo";
 import ReactionButtons from "./Reactions";
-import { selectPostById } from "./postsSlice";
+import { selectPostById, deletePost } from "./postsSlice";
 
 const SinglePost = ({ post }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { postId } = useParams();
   console.log("postId", postId);
   const seletedPost = useSelector((state) =>
@@ -20,6 +22,10 @@ const SinglePost = ({ post }) => {
       </section>
     );
   }
+  const handleDelete = () => {
+    dispatch(deletePost(seletedPost.id));
+    console.log("dispatch should be fired");
+  };
   return (
     <article>
       <h3>{seletedPost.title}</h3>
@@ -29,6 +35,7 @@ const SinglePost = ({ post }) => {
         <PostAuthor userId={seletedPost.userId} />
         <TimeAgo timestamp={seletedPost.date} />
       </p>
+      <button onClick={handleDelete}>Delete</button>
       <ReactionButtons post={seletedPost} />
     </article>
   );

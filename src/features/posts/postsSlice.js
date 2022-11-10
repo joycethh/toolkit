@@ -35,13 +35,24 @@ export const updatePost = createAsyncThunk(
     const { id } = initialPost;
     try {
       const response = await axios.put(`${POSTS_URL}/${id}`, initialPost);
-      console.log("updatePost reponse", response);
       return response.data;
     } catch (error) {
       return error.message;
     }
   }
 );
+
+export const deletePost = createAsyncThunk("/posts/deletePost", async (id) => {
+  console.log("id", id);
+  try {
+    const response = await axios.delete(`${POSTS_URL}/${id}`, id);
+    console.log("delete response", response);
+    if (response?.status === 200) return id;
+    return `${response?.status}`;
+  } catch (error) {
+    return error.message;
+  }
+});
 const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -104,6 +115,15 @@ const postsSlice = createSlice({
         action.payload.date = new Date().toISOString();
         const restPosts = state.posts.filter((post) => post.id !== id);
         state.posts = [...restPosts, action.payload];
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        if (!action.payload) {
+          console.log("delete post is not complete");
+          console.log("updatePost action.payload", action.payload);
+          return;
+        }
+        state.posts = state.posts.filter((post) => post.id !== action.payload);
+        console.log("state.posts", state.posts);
       });
   },
 });
