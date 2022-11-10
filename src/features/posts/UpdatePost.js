@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { allUsers } from "../users/usersSlice";
-import { updatePost, selectPostById } from "./postsSlice";
+import { updatePost, selectPostById, deletePost } from "./postsSlice";
 //1. get the seletedPost, populate the form witht the info
 //1. get user's input
 //2. send the updatedPost to api --dispatch
@@ -68,7 +68,21 @@ const UpdatePost = () => {
       }
     }
   };
-
+  const handleDelete = () => {
+    try {
+      setRequestStatus("pending");
+      dispatch(deletePost({ id: seletedToUpdate.id })).unwrap();
+      setTitle("");
+      setContent(" ");
+      setUserId("");
+      navigate("/");
+      console.log("delete succeeded");
+    } catch (err) {
+      console.log("Failed to delete post", err);
+    } finally {
+      setRequestStatus("idle");
+    }
+  };
   const usersOptions = users.map((user) => (
     <option key={user.id} value={user.id}>
       {user.name}
@@ -102,6 +116,8 @@ const UpdatePost = () => {
         <button type="button" onClick={handleSubmit} disabled={!canSave}>
           Submit
         </button>
+
+        <button onClick={handleDelete}>Delete</button>
       </form>
     </section>
   );
