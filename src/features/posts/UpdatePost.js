@@ -30,7 +30,7 @@ const UpdatePost = () => {
     console.log("title change", title);
   };
   const onContentChanged = (e) => setContent(e.target.value);
-  const onAuthorChanged = (e) => setUserId(e.target.value);
+  const onAuthorChanged = (e) => setUserId(Number(e.target.value));
 
   if (!seletedToUpdate) {
     return (
