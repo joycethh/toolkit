@@ -128,3 +128,10 @@ textarea {
   background-color: palevioletred;
   color: white;
 }
+
+.notFound {
+  background-color: blanchedalmond;
+  color:rgb(23, 175, 235);
+  width: 400;
+  height: 400;
+}
